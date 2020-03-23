@@ -1,6 +1,17 @@
 <html>
-<head>
-<title>JS Router</title>
-</head>
-<body></body>
+  <head>
+    <title>JS Router</title>
+    <script>
+      const locationHash = () => {
+        return window.location.hash
+          .toString()
+          .replace("#/", "")
+          .split("/");
+      };
+
+      window.onhashchange = () => {};
+      window.onhashchange();
+    </script>
+  </head>
+  <body></body>
 </html>
