@@ -29,10 +29,37 @@
     </script>
   </head>
   <body>
-    <section class="route" data-route="Home" data-route-name="Home"></section>
-    <section class="route" data-route="Home/More"></section>
-    <section class="route" data-route="About"></section>
-    <section class="route" data-route="Contact"></section>
-    <section class="route" data-route="Help"></section>
+    <section class="route" data-route="Home" data-route-name="Home">
+      <h1>
+        Home
+      </h1>
+      <code class="javascript-example"></code>
+    </section>
+    <section class="route" data-route="Home/More">
+      <h1>
+        Home/More
+      </h1>
+    </section>
+    <section class="route" data-route="About">
+      <h1>
+        About
+      </h1>
+    </section>
+    <section class="route" data-route="Contact">
+      <h1>
+        Contact
+      </h1>
+    </section>
+    <section class="route" data-route="Help">
+      <h1>
+        Help
+      </h1>
+    </section>
+    <script>
+      let example = document.querySelector("code.javascript-example");
+      example.innerText = document.createTextNode(
+        document.documentElement.innerHTML
+      );
+    </script>
   </body>
 </html>
