@@ -8,10 +8,31 @@
           .replace("#/", "")
           .split("/");
       };
+      const routes = () => {
+        let routDOMs = document.querySelectorAll("section.route");
+        let returnable = [];
 
-      window.onhashchange = () => {};
+        routDOMs.forEach(elm => {
+          returnable.push({
+            route: elm.getAttribute("data-route"),
+            name: elm.getAttribute("data-route-name"),
+            element: elm
+          });
+        });
+
+        return returnable;
+      };
+      window.onhashchange = (newURL, oldURL) => {
+        if (locationHash() == "") window.location.hash = routes()[0].route;
+      };
       window.onhashchange();
     </script>
   </head>
-  <body></body>
+  <body>
+    <section class="route" data-route="Home" data-route-name="Home"></section>
+    <section class="route" data-route="Home/More"></section>
+    <section class="route" data-route="About"></section>
+    <section class="route" data-route="Contact"></section>
+    <section class="route" data-route="Help"></section>
+  </body>
 </html>
