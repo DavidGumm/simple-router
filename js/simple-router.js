@@ -1,4 +1,5 @@
 const Pages = {};
+const Main = {};
 
 const locationHash = () => {
   return window.location.hash.toString();
@@ -57,18 +58,17 @@ class Element {
     this.children = children;
   }
 }
-const test = {};
-const JSRouter = element => {
+
+const SimpleRouter = element => {
   if (element.tagName == null || typeof element.tagName != "string") {
     throw NotElementClass("This is not of type Element");
   }
 
   let elm = document.createElement(element.tagName);
-  test.elm = elm;
-  test.element = element;
+
   if (Array.isArray(element.children) && element.children.length > 0) {
     element.children.forEach(child => {
-      let childElm = JSRouter(child);
+      let childElm = SimpleRouter(child);
       elm.appendChild(childElm);
     });
   }
@@ -93,16 +93,14 @@ const JSRouter = element => {
 };
 
 const routes = () => {
-  let routDOMs = document.querySelectorAll("section.route[data-route-normal]");
   let returnable = [];
 
-  routDOMs.forEach(elm => {
-    returnable.push({
-      route: elm.getAttribute("data-route"),
-      name: elm.getAttribute("data-route-name"),
-      element: elm
-    });
-  });
+  returnable.push({ route: "#/Home", name: "Home" });
+  returnable.push({ route: "#/Code", name: "Code" });
+  returnable.push({ route: "#/About", name: "About" });
+  returnable.push({ route: "#/Contact", name: "Contact" });
+  returnable.push({ route: "#/Help", name: "Help" });
+
   return returnable;
 };
 
@@ -118,36 +116,47 @@ const Page = () => {
   return currentPage;
 };
 
-const fourZeroFour = () => {
-  let elm = document.querySelector("section.route[data-route-404]");
-  let returnable = {
-    route: elm.getAttribute("data-route"),
-    name: elm.getAttribute("data-route-name"),
-    element: elm
-  };
-  return returnable;
-};
-const fiveHundred = () => {
-  let elm = document.querySelector("section.route[data-route-500]");
-  let returnable = {
-    route: elm.getAttribute("data-route"),
-    name: elm.getAttribute("data-route-name"),
-    element: elm
-  };
-  return returnable;
-};
+// const fourZeroFour = () => {
+//   let elm = document.querySelector("section.route[data-route-404]");
+//   let returnable = {
+//     route: elm.getAttribute("data-route"),
+//     name: elm.getAttribute("data-route-name"),
+//     element: elm
+//   };
+//   return returnable;
+// };
+
+// const fiveHundred = () => {
+//   let elm = document.querySelector("section.route[data-route-500]");
+//   let returnable = {
+//     route: elm.getAttribute("data-route"),
+//     name: elm.getAttribute("data-route-name"),
+//     element: elm
+//   };
+//   return returnable;
+// };
+
 window.onhashchange = (newURL, oldURL) => {
   if (locationHash() == "") window.location.hash = routes()[0].route;
-  routes().forEach(item => {
-    item.element.style.display = "none";
-  });
-  fourZeroFour().element.style.display = "none";
-  fiveHundred().element.style.display = "none";
-
-  Page().element.style.display = "block";
-  document.head.querySelector("title").innerText = `${document.head.title} - ${
+  Main.Content = document.querySelector("div.main-content");
+  Main.Content.innerHTML = "";
+  Main.Content.appendChild(
+    SimpleRouter(Pages[locationHash().replace("#/", "")])
+  );
+  document.head.querySelector("title").innerText = `${document.head.title} /${
     Page().name
   }`;
 };
+
+(() => {
+  var directory = "Pages/";
+  var extension = ".js";
+  for (var file of routes()) {
+    var path = directory + file.name + extension;
+    var script = document.createElement("script");
+    script.src = path;
+    document.head.appendChild(script);
+  }
+})();
 
 window.addEventListener("load", window.onhashchange);

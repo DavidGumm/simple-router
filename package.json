@@ -1,0 +1,7 @@
+{
+
+    "scripts": {
+        "start": "http-server --proxy http://localhost:80? --log-ip"
+      }
+      
+}
