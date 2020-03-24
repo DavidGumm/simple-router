@@ -1,4 +1,4 @@
-# JSRouter
+#simple-router
 
-This is a Vanilla JavaScript page router.
-Its simplistic, fast, easy to hack and great for simple small pages.
+Vanilla JavaScript page router.
+The fast and hackable front end framework.
