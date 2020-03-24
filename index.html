@@ -1,65 +1,147 @@
 <html>
-  <head>
+  <head title="JS Router">
     <title>JS Router</title>
-    <script>
-      const locationHash = () => {
-        return window.location.hash
-          .toString()
-          .replace("#/", "")
-          .split("/");
-      };
-      const routes = () => {
-        let routDOMs = document.querySelectorAll("section.route");
-        let returnable = [];
-
-        routDOMs.forEach(elm => {
-          returnable.push({
-            route: elm.getAttribute("data-route"),
-            name: elm.getAttribute("data-route-name"),
-            element: elm
-          });
-        });
-
-        return returnable;
-      };
-      window.onhashchange = (newURL, oldURL) => {
-        if (locationHash() == "") window.location.hash = routes()[0].route;
-      };
-      window.onhashchange();
-    </script>
+    <style>
+      nav {
+        display: flex;
+      }
+      nav > a {
+        margin-left: 15px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism-tomorrow.min.css"
+      integrity="sha256-xevuwyBEb2ZYh4nDhj0g3Z/rDBnM569hg9Vq6gEw/Sg="
+      crossorigin="anonymous"
+    />
+    <script src="js/JSRouter.js"></script>
   </head>
   <body>
-    <section class="route" data-route="Home" data-route-name="Home">
+    <script>
+      (() => {
+        var directory = "Pages/";
+        var extension = ".js";
+        var files = ["Home"];
+        for (var file of files) {
+          var path = directory + file + extension;
+          var script = document.createElement("script");
+          script.src = path;
+          document.head.appendChild(script);
+        }
+      })();
+    </script>
+    <nav></nav>
+    <section
+      class="route"
+      data-route="#/Home"
+      data-route-name="Home"
+      data-route-normal
+    >
       <h1>
         Home
       </h1>
-      <code class="javascript-example"></code>
     </section>
-    <section class="route" data-route="Home/More">
+    <section
+      class="route"
+      data-route="#/Code"
+      data-route-name="Code"
+      data-route-normal
+    >
       <h1>
-        Home/More
+        Code Example
       </h1>
+      <pre><code class="javascript-example"></code></pre>
     </section>
-    <section class="route" data-route="About">
+    <section
+      class="route"
+      data-route="#/About"
+      data-route-name="About"
+      data-route-normal
+    >
       <h1>
         About
       </h1>
     </section>
-    <section class="route" data-route="Contact">
+    <section
+      class="route"
+      data-route="#/Contact"
+      data-route-name="Contact"
+      data-route-normal
+    >
       <h1>
         Contact
       </h1>
     </section>
-    <section class="route" data-route="Help">
+    <section
+      class="route"
+      data-route="#/Help"
+      data-route-name="Help"
+      data-route-normal
+    >
       <h1>
         Help
       </h1>
     </section>
+    <section
+      style="display: none;"
+      class="route"
+      data-route="#/404"
+      data-route-name="404"
+      data-route-404
+    >
+      <h1>
+        404 Error, page not found.
+      </h1>
+    </section>
+    <section
+      style="display: none;"
+      class="route"
+      data-route="#/500"
+      data-route-name="500"
+      data-route-500
+    >
+      <h1>
+        500 Error, There was an error.
+      </h1>
+    </section>
     <script>
+      const nav = document.querySelector("nav");
+      routes().forEach(item => {
+        let link = document.createElement("a");
+        link.innerHTML = item.name;
+        link.href = item.route;
+        nav.appendChild(link);
+      });
+
+      let constructorElm = {
+        tagName: "section",
+        attributes: [{ attributeName: "class", attribute: "some-class" }],
+        children: [
+          {
+            tagName: "h1",
+            attributes: [],
+            children: [],
+            textContent: "Title Text"
+          },
+          {
+            tagName: "p",
+            attributes: [],
+            children: [],
+            textContent: "Some paragraph text."
+          }
+        ],
+        textContent: "this section"
+      };
+      let section = JSRouter(constructorElm);
+
       let example = document.querySelector("code.javascript-example");
-      example.innerText = document.createTextNode(
-        document.documentElement.innerHTML
-      );
+      example.innerText = example.innerText = document.documentElement.innerHTML.toString();
     </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/prism.min.js"
+      integrity="sha256-YZQM6/hLBZYkb01VYf17isoQM4qpaOP+aX96hhYrWhg="
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
