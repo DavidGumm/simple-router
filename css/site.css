@@ -1,0 +1,33 @@
+a {
+  color: #ad9ebb;
+}
+body {
+  margin: 0;
+}
+html {
+  background: #000000;
+  color: #c3bdb8;
+}
+nav {
+  display: flex;
+  padding: 3rem;
+  border: solid;
+  margin: 1rem;
+  background: #212121;
+}
+footer {
+  display: flex;
+  padding: 3rem;
+  border: solid;
+  margin: 1rem;
+  background: #212121;
+}
+nav > a {
+  margin-left: 15px;
+}
+section {
+  padding: 3rem;
+  border: solid;
+  margin: 1rem;
+  background: #212121;
+}

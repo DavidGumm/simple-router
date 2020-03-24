@@ -1,38 +1,7 @@
 <html>
   <head title="simple-router">
     <title>simple-router</title>
-    <style>
-      a {
-        color: #ad9ebb;
-      }
-      html {
-        background: #000000;
-        color: #c3bdb8;
-      }
-      nav {
-        display: flex;
-        padding: 3rem;
-        border: solid;
-        margin: 1rem;
-        background: #212121;
-      }
-      footer {
-        display: flex;
-        padding: 3rem;
-        border: solid;
-        margin: 1rem;
-        background: #212121;
-      }
-      nav > a {
-        margin-left: 15px;
-      }
-      section {
-        padding: 3rem;
-        border: solid;
-        margin: 1rem;
-        background: #212121;
-      }
-    </style>
+    <link rel="stylesheet" href="css/site.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism-tomorrow.min.css"
@@ -52,12 +21,17 @@
     ></script>
     <script>
       const nav = document.querySelector("nav");
-      routes().forEach(item => {
+      SimpleRouter.routes().forEach(item => {
         let link = document.createElement("a");
         link.innerHTML = item.name;
         link.href = item.route;
         nav.appendChild(link);
       });
+
+      let test = {};
+      SimpleRouter.Maker(test, "Marker.Temp.Default".split("."), 5);
+      SimpleRouter.Finder(test, "Marker.Temp.Default".split("."));
+      test.Marker.Temp.Default;
     </script>
   </body>
 </html>

@@ -1,42 +1,11 @@
-const Pages = {};
-const Main = {};
+const SimpleRouter = {};
 
-const locationHash = () => {
+SimpleRouter.Pages = {};
+SimpleRouter.Main = {};
+
+SimpleRouter.locationHash = () => {
   return window.location.hash.toString();
 };
-
-//Validation Code
-const Validator = () => {
-  this.prototype.validate = (value, rules) => {
-    return rules.every(rule => {
-      return this[rule](value);
-    });
-  };
-
-  this.prototype.isString = value => {
-    if (typeof value === "string") {
-      return true;
-    }
-    return false;
-  };
-
-  this.prototype.isNotEmpty = value => {
-    if (value !== "" && value !== null && typeof value !== "undefined") {
-      return true;
-    }
-    return false;
-  };
-
-  this.prototype.isInt = value => {
-    return Number.isInteger(value);
-  };
-
-  this.prototype.isArray = value => {
-    return Array.isArray(value);
-  };
-};
-
-//Validation Code
 
 class Attributes {
   constructor(attributeName, attribute) {
@@ -51,15 +20,16 @@ class TextContent {
 }
 
 class Element {
-  constructor({ tagName, attributes, textContent, children }) {
+  constructor({ tagName, attributes, textContent, children, script }) {
     this.tagName = tagName;
     this.attributes = attributes;
     this.textContent = textContent;
     this.children = children;
+    this.script = script;
   }
 }
 
-const SimpleRouter = element => {
+SimpleRouter.Route = element => {
   if (element.tagName == null || typeof element.tagName != "string") {
     throw NotElementClass("This is not of type Element");
   }
@@ -68,7 +38,7 @@ const SimpleRouter = element => {
 
   if (Array.isArray(element.children) && element.children.length > 0) {
     element.children.forEach(child => {
-      let childElm = SimpleRouter(child);
+      let childElm = SimpleRouter.Route(child);
       elm.appendChild(childElm);
     });
   }
@@ -92,7 +62,30 @@ const SimpleRouter = element => {
   return elm;
 };
 
-const routes = () => {
+SimpleRouter.Finder = (object, path) => {
+  let currentLocation = path[0];
+  path.shift();
+
+  if (Array.isArray(path) && path.length > 0) {
+    return SimpleRouter.Finder(object[currentLocation], path);
+  }
+  return object[currentLocation];
+};
+
+SimpleRouter.Maker = (object, path, value) => {
+  let currentLocation = path[0];
+  path.shift();
+  object[currentLocation] = {};
+
+  if (Array.isArray(path) && path.length > 0) {
+    return SimpleRouter.Maker(object[currentLocation], path, value);
+  }
+  object[currentLocation] = value;
+
+  return object;
+};
+
+SimpleRouter.routes = () => {
   let returnable = [];
 
   returnable.push({ route: "#/Home", name: "Home" });
@@ -104,9 +97,9 @@ const routes = () => {
   return returnable;
 };
 
-const Page = () => {
-  let currentPage = routes().find(item => {
-    return item.route == locationHash();
+SimpleRouter.Page = () => {
+  let currentPage = SimpleRouter.routes().find(item => {
+    return item.route == SimpleRouter.locationHash();
   });
   if (currentPage == undefined) {
     fourZeroFour().element.firstElementChild.innerText = `404 Error, ${window.location.href} not found.`;
@@ -137,21 +130,24 @@ const Page = () => {
 // };
 
 window.onhashchange = (newURL, oldURL) => {
-  if (locationHash() == "") window.location.hash = routes()[0].route;
-  Main.Content = document.querySelector("div.main-content");
-  Main.Content.innerHTML = "";
-  Main.Content.appendChild(
-    SimpleRouter(Pages[locationHash().replace("#/", "")])
+  if (SimpleRouter.locationHash() == "")
+    window.location.hash = SimpleRouter.routes()[0].route;
+  SimpleRouter.Main.Content = document.querySelector("div.main-content");
+  SimpleRouter.Main.Content.innerHTML = "";
+  SimpleRouter.Main.Content.appendChild(
+    SimpleRouter.Route(
+      SimpleRouter.Pages[SimpleRouter.locationHash().replace("#/", "")]
+    )
   );
   document.head.querySelector("title").innerText = `${document.head.title} /${
-    Page().name
+    SimpleRouter.Page().name
   }`;
 };
 
 (() => {
   var directory = "Pages/";
   var extension = ".js";
-  for (var file of routes()) {
+  for (var file of SimpleRouter.routes()) {
     var path = directory + file.name + extension;
     var script = document.createElement("script");
     script.src = path;

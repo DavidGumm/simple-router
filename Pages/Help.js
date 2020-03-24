@@ -1,4 +1,4 @@
-Pages.Help = {
+SimpleRouter.Pages.Help = {
   tagName: "section",
   children: [
     { tagName: "h1", textContent: "Help" },
