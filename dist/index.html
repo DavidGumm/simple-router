@@ -1,0 +1,53 @@
+<meta charset="utf-8" />
+<html>
+  <head title="simple-router">
+    <script>
+      let test = {};
+    </script>
+    <title>simple-router</title>
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism-tomorrow.min.css"
+      integrity="sha256-xevuwyBEb2ZYh4nDhj0g3Z/rDBnM569hg9Vq6gEw/Sg="
+      crossorigin="anonymous"
+    />
+    <script src="js/simple-router.js"></script>
+  </head>
+  <body>
+    <nav></nav>
+    <div class="main-content"></div>
+    <footer></footer>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/prism.min.js"
+      integrity="sha256-YZQM6/hLBZYkb01VYf17isoQM4qpaOP+aX96hhYrWhg="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let SimpleRouterJS = new SimpleRouter();
+
+      (() => {
+        var directory = "Pages/";
+        var extension = ".js";
+        for (var file of SimpleRouterJS.Routes) {
+          var path = directory + file.name + extension;
+          var script = document.createElement("script");
+          script.src = path;
+          document.head.appendChild(script);
+        }
+      })();
+
+      const nav = document.querySelector("nav");
+      SimpleRouterJS.Routes.forEach(item => {
+        let link = document.createElement("a");
+        link.innerHTML = item.name;
+        link.href = item.route;
+        nav.appendChild(link);
+      });
+
+      SimpleRouterJS.Maker(test, "Marker.Temp.Default".split("."), 5);
+      SimpleRouterJS.Finder(test, "Marker.Temp.Default".split("."));
+    </script>
+  </body>
+</html>

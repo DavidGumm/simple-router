@@ -1,7 +1,16 @@
 {
-
-    "scripts": {
-        "start": "http-server --proxy http://localhost:80? --log-ip"
-      }
-      
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server --proxy http://localhost:8080? --log-ip",
+    "build": "npx webpack --config webpack.config.prod.js -mode production --verbose",
+    "dev": "npx webpack --config webpack.config.dev.js -mode development --display-error-details"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^4.0.3",
+    "lodash": "^4.17.15"
+  }
 }
